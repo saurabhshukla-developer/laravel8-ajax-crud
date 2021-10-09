@@ -24,3 +24,4 @@ Route::post('/employee', [EmployeeController::class, 'store']);
 Route::get('/employee/{id}', [EmployeeController::class, 'show']);
 Route::post('/update/employee/{id}', [EmployeeController::class, 'update']);
 Route::get('/delete/employee/{id}', [EmployeeController::class, 'destroy']);
+Route::get('/export', [EmployeeController::class, 'export']);

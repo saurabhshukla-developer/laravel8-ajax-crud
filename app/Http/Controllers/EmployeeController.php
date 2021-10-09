@@ -104,4 +104,42 @@ class EmployeeController extends Controller
             return new EmployeeResource($employee);
         }
     }
+
+    /**
+     * Method to Export Employee Data Into CSV File
+     */
+    public function export(Request $request)
+    {
+        $fileName = 'employee.csv';
+        $employees = Employee::all();
+
+        $headers = array(
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        );
+
+        $columns = array('Name', 'Email', 'Mobile', 'Designation', 'Salary');
+
+        $callback = function() use($employees, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+
+            foreach ($employees as $employee) {
+                $row['Name']  = $employee->name;
+                $row['Email']    = $employee->email;
+                $row['Mobile']    = $employee->mobile;
+                $row['Designation']  = $employee->designation;
+                $row['Salary']  = $employee->salary;
+
+                fputcsv($file, array($row['Name'], $row['Email'], $row['Mobile'], $row['Designation'], $row['Salary']));
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

@@ -21,8 +21,9 @@
                         <a class="btn btn-primary" id="btn-add-employee-modal" href="#add_employee" data-toggle="modal">
                             Add Employee
                         </a>
-                        <a class="btn btn-primary" href="#">
-                            Export To .XLS
+                        <a class="btn btn-primary" href="{{ url('api/export') }}">
+                            Export To .CSV
+                            {{-- URL::to('/'); --}}
                         </a>
                     </div>
                 </div>
@@ -117,7 +118,9 @@
         <script>
             $(document).ready(function()
             {
-                var baseURL = "http://localhost/personal/interview/laravel8-ajax-crud/public/";
+                var baseURL = {!! json_encode(url('/')) !!} + "/";
+
+                // var baseURL = "http://localhost/personal/interview/laravel8-ajax-crud/public/";
                 var all_employee_details = '';
                 showAllEmployee();
                 
